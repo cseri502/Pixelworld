@@ -15,6 +15,7 @@ internal class Terrain
         Log,
         TreeLeaves,
         Sand,
+        Gravel,
         CoalOre,
         IronOre,
         GoldOre,

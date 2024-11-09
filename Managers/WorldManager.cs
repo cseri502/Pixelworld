@@ -264,7 +264,7 @@ internal class WorldManager(byte width, byte height)
         }
     }
 
-    public void Draw(Vector2 cameraPosition, Dictionary<Terrain.Types, Texture2D> textures)
+    public void Draw(Vector2 cameraPosition, TextureManager tm)
     {
         int screenWidth = Raylib.GetScreenWidth();
         int screenHeight = Raylib.GetScreenHeight();
@@ -279,32 +279,40 @@ internal class WorldManager(byte width, byte height)
                 Rectangle rect = new(position, new Vector2(Game.RectSize, Game.RectSize));
                 bool isHovered = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), rect);
 
-                DrawTile(rect, x, y, isHovered, world, cameraPosition, textures, Raylib.GetFontDefault());
+                DrawTile(rect, x, y, isHovered, cameraPosition, tm, Raylib.GetFontDefault());
             }
         }
     }
 
-    private static void DrawTile(Rectangle rect, int x, int y, bool isHovered, Terrain.Types[,] map, Vector2 camPos, Dictionary<Terrain.Types, Texture2D> textures, Font inter)
+    private void DrawTile(Rectangle rect, int x, int y, bool isHovered, Vector2 camPos, TextureManager tm, Font inter)
     {
         int posX = x + (int)Math.Floor(camPos.X);
         int posY = y + (int)Math.Floor(camPos.Y);
 
-        if (map[posX, posY] == Terrain.Types.Sky)
+        if (world[posX, posY] == Terrain.Types.Sky)
             Raylib.DrawRectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, Color.SkyBlue);
         else
-            Raylib.DrawTextureRec(textures[map[posX, posY]], new Rectangle(0, 0, Game.RectSize, Game.RectSize), rect.Position, Color.White);
+        {
+            // TODO: Fix drawing
+
+            Rectangle sourceRect = tm.GetTextureRegion(world[posX, posY]);
+            sourceRect.Width = Game.RectSize;
+            sourceRect.Height = Game.RectSize;
+
+            Raylib.DrawTextureRec(tm.Atlas, sourceRect, rect.Position, Color.White);
+        }
 
         /*if (DebugModeEnabled)
             DrawPositions(rect, new Vector2(camPos.X + x, camPos.Y + y), inter);*/
 
-        if (isHovered && !Terrain.breakWhitelist.Contains(map[posX, posY]))
+        if (isHovered && !Terrain.breakWhitelist.Contains(world[posX, posY]))
         {
             if (Raylib.IsMouseButtonPressed(MouseButton.Left))
             {
-                if (map[posX, posY] == Terrain.Types.TreeLeaves)
-                    map[posX, posY] = Terrain.Types.Log;
+                if (world[posX, posY] == Terrain.Types.TreeLeaves)
+                    world[posX, posY] = Terrain.Types.Log;
                 else
-                    map[posX, posY] = Terrain.Types.Sky;
+                    world[posX, posY] = Terrain.Types.Sky;
             }
 
             Raylib.DrawRectangleLinesEx(rect, 1, Color.Black);

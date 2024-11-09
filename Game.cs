@@ -23,7 +23,7 @@ internal class Game
     public void Run(string windowTitle, short width, short height)
     {
         InitWindow(windowTitle, width, height);
-        textureManager.LoadAll();
+        textureManager.Load();
         worldManager.CreateWorld();
 
         while (!(Raylib.WindowShouldClose() && !Raylib.IsKeyPressed(KeyboardKey.Escape)))
@@ -51,7 +51,7 @@ internal class Game
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.Black);
 
-        worldManager.Draw(cameraManager.Position, textureManager.Textures);
+        worldManager.Draw(cameraManager.Position, textureManager);
         
         if (ShowFPS)
         {
@@ -66,7 +66,7 @@ internal class Game
 
     private void Terminate()
     {
-        textureManager.UnloadAll();
+        textureManager.Unload();
         Raylib.CloseWindow();
         Console.WriteLine("[APP]: Pixelworld unloaded all it's resources from the memory.");
     }
