@@ -8,8 +8,6 @@ internal class TextureManager
     public Dictionary<Terrain.Types, Rectangle> TextureRegions { get; private set; } = [];
     private Texture2D atlas;
     private const byte textureSize = 32;
-    private const short atlasSize = 512;
-    private const byte tilesPerRow = atlasSize / textureSize;
 
     public Texture2D Atlas
     {

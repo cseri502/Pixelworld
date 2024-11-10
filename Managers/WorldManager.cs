@@ -293,13 +293,10 @@ internal class WorldManager(byte width, byte height)
             Raylib.DrawRectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, Color.SkyBlue);
         else
         {
-            // TODO: Fix drawing
-
             Rectangle sourceRect = tm.GetTextureRegion(world[posX, posY]);
-            sourceRect.Width = Game.RectSize;
-            sourceRect.Height = Game.RectSize;
+            Rectangle destRect = new Rectangle(rect.X, rect.Y, Game.RectSize, Game.RectSize);
 
-            Raylib.DrawTextureRec(tm.Atlas, sourceRect, rect.Position, Color.White);
+            Raylib.DrawTexturePro(tm.Atlas, sourceRect, destRect, Vector2.Zero, 0f, Color.White);
         }
 
         /*if (DebugModeEnabled)
