@@ -50,8 +50,7 @@ internal class Game
     {
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.Black);
-
-        worldManager.Draw(cameraManager.Position, textureManager);
+        DrawManager.RenderWorld(cameraManager, textureManager, worldManager);
         
         if (ShowFPS)
         {
