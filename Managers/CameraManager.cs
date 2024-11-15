@@ -7,10 +7,10 @@ internal class CameraManager(int x, int y)
 {
     public Vector2 Position { get; private set; } = new Vector2(x, y);
 
-    public void Update(int worldWidth, int worldHeight)
+    public void Update(int worldWidth, int worldHeight, int screenWidth, int screenHeight)
     {
-        int gridSizeX = Raylib.GetScreenWidth() / Game.RectSize;
-        int gridSizeY = Raylib.GetScreenHeight() / Game.RectSize;
+        int gridSizeX = screenWidth / Game.RectSize;
+        int gridSizeY = screenHeight / Game.RectSize;
         int maxX = worldWidth - gridSizeX;
         int maxY = worldHeight - gridSizeY;
 

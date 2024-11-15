@@ -6,18 +6,13 @@ namespace Pixelworld.Managers;
 
 internal class DrawManager
 {
-    public static void RenderWorld(CameraManager cm, TextureManager tm, WorldManager wm)
+    public static void RenderWorld(Game g, CameraManager cm, TextureManager tm, WorldManager wm)
     {
-        int screenWidth = Raylib.GetScreenWidth();
-        int screenHeight = Raylib.GetScreenHeight();
-        int offsetX = (screenWidth % Game.RectSize) / 2;
-        int offsetY = (screenHeight % Game.RectSize) / 2;
-
-        for (int x = 0; x < screenWidth / Game.RectSize; x++)
+        for (int x = 0; x < g.screenWidth / Game.RectSize; x++)
         {
-            for (int y = 0; y < screenHeight / Game.RectSize; y++)
+            for (int y = 0; y < g.screenHeight / Game.RectSize; y++)
             {
-                Vector2 position = new Vector2(x * Game.RectSize + offsetX, y * Game.RectSize + offsetY);
+                Vector2 position = new Vector2(x * Game.RectSize + g.offsetX, y * Game.RectSize + g.offsetY);
                 Rectangle rect = new(position, new Vector2(Game.RectSize, Game.RectSize));
                 bool isHovered = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), rect);
 

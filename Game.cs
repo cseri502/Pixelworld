@@ -11,6 +11,11 @@ internal class Game
     private readonly CameraManager cameraManager;
     private readonly TextureManager textureManager;
 
+    public int offsetX;
+    public int offsetY;
+    public int screenWidth;
+    public int screenHeight;
+
     private readonly bool ShowFPS = true;
 
     public Game()
@@ -29,7 +34,8 @@ internal class Game
         while (!(Raylib.WindowShouldClose() && !Raylib.IsKeyPressed(KeyboardKey.Escape)))
         {
             Render();
-            cameraManager.Update(worldManager.Width, worldManager.Height);
+            cameraManager.Update(worldManager.Width, worldManager.Height, screenWidth, screenHeight);
+            GetDimensions();
         }
 
         Terminate();
@@ -50,17 +56,20 @@ internal class Game
     {
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.Black);
-        DrawManager.RenderWorld(cameraManager, textureManager, worldManager);
+        DrawManager.RenderWorld(this, cameraManager, textureManager, worldManager);
         
         if (ShowFPS)
-        {
-            int offsetX = (Raylib.GetScreenWidth() % RectSize) / 2;
-            int offsetY = (Raylib.GetScreenHeight() % RectSize) / 2;
-
             Raylib.DrawFPS(10 + offsetX, 10 + offsetY);
-        }
 
         Raylib.EndDrawing();
+    }
+
+    private void GetDimensions()
+    {
+        screenWidth = Raylib.GetScreenWidth();
+        screenHeight = Raylib.GetScreenHeight();
+        offsetX = (screenWidth % Game.RectSize) / 2;
+        offsetY = (screenHeight % Game.RectSize) / 2;
     }
 
     private void Terminate()
